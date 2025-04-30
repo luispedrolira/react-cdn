@@ -58,10 +58,44 @@
             )
         }
 
+
+        function App() {
+            // Este estado es el que va a guardar la lista de los comments
+            const [comments, setComments] = React.useState([]);
+            
+        
+            const addComment = (newComment) => {
+                setComments([...comments, newComment]);
+            };
+            
+            return (
+                <div>
+                    <Greeting />
+                    
+                    <CommentForm onAddComment={addComment} />
+                    
+                    {/* Sección para mostrar los comentarios */}
+                    <h2>Comentarios ({comments.length})</h2>
+                    {comments.length === 0 ? (
+                        <p>No hay comentarios aún. ¡Sé el primero en comentar!</p>
+                    ) : (
+                        <div>
+                            {/* Aqui mapea y renderiza cada comentario */}
+                            {comments.map((comment, index) => (
+                                <div className="comment" key={index}>
+                                    {comment}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
         
 
         const root = ReactDOM.createRoot(document.getElementById('root'))
-        root.render(<CommentForm />)
+        root.render(<App />)
     </script>
 </body>
 </html>
