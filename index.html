@@ -22,8 +22,46 @@
             return <h1>¡Hola, bienvenido a React!</h1>;
         }
 
+        function CommentForm({ onAddComment }) {
+            //Este estado va a ser para guardar el comment del usuario
+            const [commentText, setCommentText] = React.useState('')
+
+            //Esta función va a servir para manejar el evento cuando se envie un comment
+            const handleSubmit = (event) => {
+                event.preventDefault() // Esta linea hace que la pagina se recargue
+
+                // Primero, verifica si el comment no viene vacio
+                if (commentText.trim() !== '') { // ¿Para que sirve .trim()?
+                    onAddComment(commentText)
+                    setCommentText('')
+
+                } else {
+                    alert('El comentario no puede estar vacío')
+                }
+            }
+
+            return (
+                <form onSubmit={handleSubmit}>
+                    <h2>Añadir un comentario</h2>
+                    <div>
+                        <textarea 
+                            value={commentText}
+                            onChange={(e) => setCommentText(e.target.value)}
+                            placeholder="Escribe tu comentario aquí"
+                            rows="4"
+                            style={{ width: '100%', marginBottom: '10px' }}
+                            required
+                        />
+                    </div>
+                    <button type="submit">Enviar comentario</button>
+                </form>
+            )
+        }
+
+        
+
         const root = ReactDOM.createRoot(document.getElementById('root'))
-        root.render(<Greeting />)
+        root.render(<CommentForm />)
     </script>
 </body>
 </html>
