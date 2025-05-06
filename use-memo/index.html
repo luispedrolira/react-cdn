@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Personajes de Breaking Bad</title>
+    <!-- React -->
+    <script
+      src="https://unpkg.com/react@18/umd/react.development.js"
+      crossorigin
+    ></script>
+    <!-- ReactDOM -->
+    <script
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <!-- Babel para procesar JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const { useState, useMemo } = React;
+
+      function UserSearch() {
+        // Estado para la búsqueda
+        const [search, setSearch] = useState("");
+
+        // Estado para el formulario de agregar usuario
+        const [newUserName, setNewUserName] = useState("");
+        const [newUserDescription, setNewUserDescription] = useState("");
+
+        // Estado para la lista de usuarios
+        const [users, setUsers] = useState([
+          {
+            id: 1,
+            name: "Luis Pedro Lira",
+            description:
+              "Me gusta mucho hacer actividad física (deportes, salir a correr), ver series de drama o acción, manejar carros rápidos e ir con la música a tope JAJAJA, emprender ;)",
+          },
+          {
+            id: 2,
+            name: "Walter White",
+            description:
+              "Profesor de química convertido en fabricante de metanfetamina. También conocido como Heisenberg.",
+          },
+          {
+            id: 3,
+            name: "Jesse Pinkman",
+            description:
+              "Ex-alumno de Walter White y su socio en el negocio de las drogas.",
+          },
+          {
+            id: 4,
+            name: "Skyler White",
+            description: "Esposa de Walter White, contadora y escritora.",
+          },
+          {
+            id: 5,
+            name: "Hank Schrader",
+            description: "Agente de la DEA y cuñado de Walter White.",
+          },
+          {
+            id: 6,
+            name: "Saul Goodman",
+            description:
+              "Abogado corrupto que ayuda a Walter y Jesse en sus negocios ilegales.",
+          },
+          {
+            id: 7,
+            name: "Gus Fring",
+            description: "Dueño de Los Pollos Hermanos y narcotraficante.",
+          },
+        ]);
+
+        // Usar useMemo para filtrar usuarios (solo se recalcula cuando cambia search o users)
+        const filteredUsers = useMemo(() => {
+          console.log("Filtrando usuarios...");
+          return users.filter(
+            (user) =>
+              user.name.includes(search) || user.description.includes(search)
+          );
+        }, [search, users]);
+
+        // Manejar la búsqueda
+        const handleSearch = (e) => {
+          setSearch(e.target.value);
+        };
+
+        // Manejar agregar usuario
+        const handleAddUser = () => {
+          if (newUserName.trim() && newUserDescription.trim()) {
+            const newUser = {
+              id: users.length + 1,
+              name: newUserName,
+              description: newUserDescription,
+            };
+            setUsers([...users, newUser]);
+            setNewUserName("");
+            setNewUserDescription("");
+          }
+        };
+
+        return (
+          <div className="container">
+            <h1>Buscador de Usuarios</h1>
+
+            {/* Barra de búsqueda */}
+            <input
+              type="text"
+              className="search-bar"
+              placeholder="Buscar por nombre o descripción..."
+              value={search}
+              onChange={handleSearch}
+            />
+
+            {/* Formulario para agregar usuarios */}
+            <div className="add-user-form">
+              <input
+                type="text"
+                placeholder="Nombre"
+                value={newUserName}
+                onChange={(e) => setNewUserName(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Descripción"
+                value={newUserDescription}
+                onChange={(e) => setNewUserDescription(e.target.value)}
+              />
+              <button onClick={handleAddUser}>Agregar Usuario</button>
+            </div>
+
+            {/* Lista de usuarios filtrados */}
+            <ul className="user-list">
+              {filteredUsers.map((user) => (
+                <li key={user.id} className="user-item">
+                  <div className="user-name">{user.name}</div>
+                  <div className="user-description">{user.description}</div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      }
+
+      // Renderizar la aplicación
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<UserSearch />);
+    </script>
+  </body>
+</html>
