@@ -17,6 +17,150 @@
     ></script>
     <!-- Babel para procesar JSX -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        * { /* Para darle estilo a todo en la pagina ;) */
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+          background-color: #000;
+          color: #fff;
+          padding: 20px;
+          height: 100vh;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        .stopwatch-container {
+          width: 100%;
+          max-width: 500px;
+          background-color: #1c1c1e;
+          border-radius: 12px;
+          overflow: hidden;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header {
+          display: flex;
+          justify-content: space-between;
+          padding: 12px 20px;
+          background-color: #2c2c2e;
+          border-bottom: 1px solid #3c3c3e;
+        }
+        
+        .tab {
+          color: #8e8e93;
+          font-size: 14px;
+          padding: 6px 12px;
+          cursor: pointer;
+        }
+        
+        .tab.active {
+          color: #fff;
+        }
+        
+        .timer-display {
+          font-size: 72px;
+          font-weight: 200;
+          text-align: center;
+          padding: 40px 0;
+        }
+        
+        .controls {
+          display: flex;
+          justify-content: space-between;
+          padding: 0 20px 20px;
+        }
+        
+        .button {
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          border: none;
+          font-size: 16px;
+          font-weight: 600;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+        }
+        
+        .lap-button {
+          background-color: #3a3a3c;
+          color: white;
+        }
+        
+        .lap-button:disabled {
+          opacity: 0.3;
+          cursor: not-allowed;
+        }
+        
+        .start-button {
+          background-color: #1a8754;
+        }
+        
+        .stop-button {
+          background-color: #dc3545;
+        }
+        
+        .reset-button {
+          background-color: #3a3a3c;
+        }
+        
+        .laps-container {
+          padding: 0 20px;
+          max-height: 250px;
+          overflow-y: auto;
+        }
+        
+        .laps-header {
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+          padding: 10px 0;
+          border-bottom: 1px solid #3c3c3e;
+          font-size: 14px;
+          color: #8e8e93;
+        }
+        
+        .laps-list {
+          list-style-type: none;
+        }
+        
+        .lap-item {
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+          padding: 12px 0;
+          border-bottom: 1px solid #3c3c3e;
+          font-size: 16px;
+        }
+        
+        .lap-number {
+          text-align: left;
+        }
+        
+        .lap-split {
+          text-align: center;
+        }
+        
+        .lap-total {
+          text-align: right;
+        }
+        
+        .best-lap {
+          color: #32d74b;
+        }
+        
+        .worst-lap {
+          color: #ff453a;
+        }
+      </style>
   </head>
   <body>
     <div id="root"></div>
@@ -150,8 +294,8 @@
 
         return (
           <div className="stopwatch-container">
-            <div className="header">
-              <div className="tab active">Reloj mundial</div>
+            <div className="header"> 
+              <div className="tab">Reloj mundial</div>
               <div className="tab">Alarmas</div>
               <div className="tab active">Cronómetro</div>
               <div className="tab">Temporizadores</div>
@@ -188,9 +332,9 @@
             {laps.length > 0 && (
               <div className="laps-container">
                 <div className="laps-header">
-                  <div className="lap-number">Vuelta</div>
-                  <div className="lap-split">Dividir</div>
-                  <div className="lap-total">Total</div>
+                  <div className="lap-number">Numero vuelta</div>
+                  <div className="lap-split">Tiempo vuelta</div>
+                  <div className="lap-total">Total tiempo</div>
                 </div>
 
                 <ul className="laps-list">
