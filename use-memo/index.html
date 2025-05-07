@@ -16,6 +16,80 @@
     ></script>
     <!-- Babel para procesar JSX -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 20px;
+          background-color: #f5f5f5;
+        }
+        .container {
+          max-width: 800px;
+          margin: 0 auto;
+          background-color: white;
+          padding: 20px;
+          border-radius: 8px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+          color: #333;
+          text-align: center;
+        }
+        .search-bar {
+          width: 100%;
+          padding: 10px;
+          margin-bottom: 20px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          font-size: 16px;
+        }
+        .add-user-form {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin-bottom: 20px;
+          padding: 15px;
+          background-color: #f9f9f9;
+          border-radius: 4px;
+        }
+        .add-user-form input {
+          flex: 1;
+          min-width: 200px;
+          padding: 10px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+        }
+        .add-user-form button {
+          padding: 10px 15px;
+          background-color: #4CAF50;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+        .add-user-form button:hover {
+          background-color: #45a049;
+        }
+        .user-list {
+          list-style-type: none;
+          padding: 0;
+        }
+        .user-item {
+          padding: 15px;
+          border-bottom: 1px solid #eee;
+        }
+        .user-item:last-child {
+          border-bottom: none;
+        }
+        .user-name {
+          font-weight: bold;
+          margin-bottom: 5px;
+        }
+        .user-description {
+          color: #666;
+        }
+      </style>
   </head>
   <body>
     <div id="root"></div>
@@ -90,7 +164,7 @@
           setSearch(e.target.value);
         };
 
-        // Manejar agregar usuario
+        // Aqui agregamos a los nuevos usuarios/personajes
         const handleAddUser = () => {
           if (newUserName.trim() && newUserDescription.trim()) {
             const newUser = {
@@ -108,7 +182,7 @@
           <div className="container">
             <h1>Buscador de Usuarios</h1>
 
-            {/* Barra de búsqueda */}
+            {/* ---- BARRA DE BUSQUEDA ---- */}
             <input
               type="text"
               className="search-bar"
@@ -117,7 +191,7 @@
               onChange={handleSearch}
             />
 
-            {/* Formulario para agregar usuarios */}
+            {/* ---- AGREGAR NUEVOS USUARIOS/PERSONAJES ---- */}
             <div className="add-user-form">
               <input
                 type="text"
@@ -134,7 +208,7 @@
               <button onClick={handleAddUser}>Agregar Usuario</button>
             </div>
 
-            {/* Lista de usuarios filtrados */}
+            {/* ---- LISTA DE USUARIOS/PERSONAJES ----- */}
             <ul className="user-list">
               {filteredUsers.map((user) => (
                 <li key={user.id} className="user-item">
