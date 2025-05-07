@@ -18,78 +18,78 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <style>
-        body {
-          font-family: Arial, sans-serif;
-          margin: 0;
-          padding: 20px;
-          background-color: #065033;
-        }
-        .container {
-          max-width: 800px;
-          margin: 0 auto;
-          background-color: white;
-          padding: 20px;
-          border-radius: 8px;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-          color: #333;
-          text-align: center;
-        }
-        .search-bar {
-          width: 90%;
-          padding: 10px;
-          margin-bottom: 20px;
-          border: 1px solid #ddd;
-          border-radius: 4px;
-          font-size: 16px;
-        }
-        .add-user-form {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 10px;
-          margin-bottom: 20px;
-          padding: 15px;
-          background-color: #f9f9f9;
-          border-radius: 4px;
-        }
-        .add-user-form input {
-          flex: 1;
-          min-width: 200px;
-          padding: 10px;
-          border: 1px solid #ddd;
-          border-radius: 4px;
-        }
-        .add-user-form button {
-          padding: 10px 15px;
-          background-color: #8f870a;
-          color: white;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-        }
-        .add-user-form button:hover {
-          background-color: #504b08;
-        }
-        .user-list {
-          list-style-type: none;
-          padding: 0;
-        }
-        .user-item {
-          padding: 15px;
-          border-bottom: 1px solid #eee;
-        }
-        .user-item:last-child {
-          border-bottom: none;
-        }
-        .user-name {
-          font-weight: bold;
-          margin-bottom: 5px;
-        }
-        .user-description {
-          color: #666;
-        }
-      </style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #065033;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        color: #333;
+        text-align: center;
+      }
+      .search-bar {
+        width: 90%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+      .add-user-form {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: #f9f9f9;
+        border-radius: 4px;
+      }
+      .add-user-form input {
+        flex: 1;
+        min-width: 200px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+      .add-user-form button {
+        padding: 10px 15px;
+        background-color: #8f870a;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .add-user-form button:hover {
+        background-color: #504b08;
+      }
+      .user-list {
+        list-style-type: none;
+        padding: 0;
+      }
+      .user-item {
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+      }
+      .user-item:last-child {
+        border-bottom: none;
+      }
+      .user-name {
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+      .user-description {
+        color: #666;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
@@ -105,7 +105,7 @@
         const [newUserName, setNewUserName] = useState("");
         const [newUserDescription, setNewUserDescription] = useState("");
 
-        // Estado que nos va a servir para la lista de usuarios, 
+        // Estado que nos va a servir para la lista de usuarios,
         // con personajes de la mejor serie de la historia ;)
         const [users, setUsers] = useState([
           {
@@ -118,48 +118,81 @@
             id: 2,
             name: "Walter White",
             description:
-              "Profesor de química convertido en fabricante de metanfetamina. También conocido como Heisenberg.",
+              "Pasó de profe de química con cáncer a un capo de la metanfetamina con sombrero. Heisenberg, baby.",
           },
           {
             id: 3,
             name: "Jesse Pinkman",
             description:
-              "Ex-alumno de Walter White y su socio en el negocio de las drogas.",
+              "Exalumno, experto en decir 'yo b****!', y maestro en líos que explotan... literalmente.",
           },
           {
             id: 4,
             name: "Skyler White",
-            description: "Esposa de Walter White, contadora y escritora.",
+            description:
+              "Esposa, contadora y una experta en lavar dinero mientras cuida a la familia. No la subestimes.",
           },
           {
             id: 5,
             name: "Hank Schrader",
-            description: "Agente de la DEA y cuñado de Walter White.",
+            description:
+              "Agente de la DEA, fan de la cerveza y de los minerales. A veces más cerca del peligro de lo que cree.",
           },
           {
             id: 6,
             name: "Saul Goodman",
             description:
-              "Abogado corrupto que ayuda a Walter y Jesse en sus negocios ilegales.",
+              "Si tienes problemas legales, llama a Saul. Abogado con trajes chillones y contactos turbios.",
           },
           {
             id: 7,
             name: "Gus Fring",
-            description: "Dueño de Los Pollos Hermanos y narcotraficante.",
+            description:
+              "Dueño de Los Pollos Hermanos y maestro del disimulo. Más meticuloso que un reloj suizo... mortal también.",
+          },
+          {
+            id: 8,
+            name: "Mike Ehrmantraut",
+            description:
+              "Abuelo badass, ex-policía, silencioso pero letal. Sabe cómo arreglar problemas… o eliminarlos.",
+          },
+          {
+            id: 9,
+            name: "Kim Wexler",
+            description:
+              "Abogada brillante, más lista que todos, y con un lado oscuro escondido detrás de sus trajes impecables.",
+          },
+          {
+            id: 10,
+            name: "Nacho Varga",
+            description:
+              "Un tipo atrapado entre el deber y el crimen. Siempre parece que quiere irse… pero nunca lo logra.",
+          },
+          {
+            id: 11,
+            name: "Lalo Salamanca",
+            description:
+              "Carismático, sonriente y absolutamente aterrador. El tío que no quieres en tu fiesta... ni en tu país.",
+          },
+          {
+            id: 12,
+            name: "Howard Hamlin",
+            description:
+              "Abogado con estilo, sonrisa Colgate y un talento para parecer culpable... sin haber hecho nada malo.",
           },
         ]);
 
-        // Usamos useMemo para poder filtrar a los usuarios 
+        // Usamos useMemo para poder filtrar a los usuarios
         // (solo se recalcula cuando cambia search o users, es decir, no se vuelve a ejecutar cada vez que se renderiza el componente)
         const filteredUsers = useMemo(() => {
           console.log("Filtrando usuarios...");
           return users.filter(
             (user) =>
-              user.name.toLowerCase().includes(search.toLowerCase()) || user.description.toLowerCase().includes(search.toLowerCase())
+              user.name.toLowerCase().includes(search.toLowerCase()) ||
+              user.description.toLowerCase().includes(search.toLowerCase())
           );
         }, [search, users]);
 
-        
         const handleSearch = (e) => {
           setSearch(e.target.value);
         };
@@ -181,7 +214,6 @@
         return (
           <div className="container">
             <h1>Personajes de Breaking Bad (y yo)</h1>
-        
 
             {/* ---- BARRA DE BUSQUEDA ---- */}
             <input
