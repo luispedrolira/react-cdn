@@ -22,7 +22,7 @@
           font-family: Arial, sans-serif;
           margin: 0;
           padding: 20px;
-          background-color: #f5f5f5;
+          background-color: #065033;
         }
         .container {
           max-width: 800px;
@@ -37,7 +37,7 @@
           text-align: center;
         }
         .search-bar {
-          width: 100%;
+          width: 90%;
           padding: 10px;
           margin-bottom: 20px;
           border: 1px solid #ddd;
@@ -62,14 +62,14 @@
         }
         .add-user-form button {
           padding: 10px 15px;
-          background-color: #4CAF50;
+          background-color: #8f870a;
           color: white;
           border: none;
           border-radius: 4px;
           cursor: pointer;
         }
         .add-user-form button:hover {
-          background-color: #45a049;
+          background-color: #504b08;
         }
         .user-list {
           list-style-type: none;
@@ -180,13 +180,14 @@
 
         return (
           <div className="container">
-            <h1>Buscador de Usuarios</h1>
+            <h1>Personajes de Breaking Bad (y yo)</h1>
+        
 
             {/* ---- BARRA DE BUSQUEDA ---- */}
             <input
               type="text"
               className="search-bar"
-              placeholder="Buscar por nombre o descripción..."
+              placeholder="Busca un personaje de Breaking Bad..."
               value={search}
               onChange={handleSearch}
             />
