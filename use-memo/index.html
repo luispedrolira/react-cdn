@@ -24,14 +24,15 @@
       const { useState, useMemo } = React;
 
       function UserSearch() {
-        // Estado para la búsqueda
+        // Estado que nos va a servir para la busqueda
         const [search, setSearch] = useState("");
 
-        // Estado para el formulario de agregar usuario
+        // Estado para llegar a agregar un nuevo usuario
         const [newUserName, setNewUserName] = useState("");
         const [newUserDescription, setNewUserDescription] = useState("");
 
-        // Estado para la lista de usuarios
+        // Estado que nos va a servir para la lista de usuarios, 
+        // con personajes de la mejor serie de la historia ;)
         const [users, setUsers] = useState([
           {
             id: 1,
@@ -74,16 +75,17 @@
           },
         ]);
 
-        // Usar useMemo para filtrar usuarios (solo se recalcula cuando cambia search o users)
+        // Usamos useMemo para poder filtrar a los usuarios 
+        // (solo se recalcula cuando cambia search o users, es decir, no se vuelve a ejecutar cada vez que se renderiza el componente)
         const filteredUsers = useMemo(() => {
           console.log("Filtrando usuarios...");
           return users.filter(
             (user) =>
-              user.name.includes(search) || user.description.includes(search)
+              user.name.toLowerCase().includes(search.toLowerCase()) || user.description.toLowerCase().includes(search.toLowerCase())
           );
         }, [search, users]);
 
-        // Manejar la búsqueda
+        
         const handleSearch = (e) => {
           setSearch(e.target.value);
         };
