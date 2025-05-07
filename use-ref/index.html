@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cronometro "Apple"</title>
+
+    <!-- React -->
+    <script
+      src="https://unpkg.com/react@18/umd/react.development.js"
+      crossorigin
+    ></script>
+    <!-- ReactDOM -->
+    <script
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+    <!-- Babel para procesar JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!-- 
+        Quise replicar el cronometro que tiene Apple por defecto,
+         tiene un "feature" donde se mira visualmente la vuelta más rápida y la vuelta más lenta,
+         y como a mi me gusta correr me gustó mucho esa funcionalidad
+    -->
+
+    <div class="stopwatch-container">
+        <div class="header">
+          <div class="tab active">Reloj mundial</div>
+          <div class="tab">Alarmas</div>
+          <div class="tab active">Cronómetro</div>
+        </div>
+      
+        <div class="timer-display">01:09.41</div>
+      
+        <div class="controls">
+          <button class="button lap-button">
+            Vuelta
+          </button>
+      
+          <!-- Botón para iniciar/reanudar cuando este detenido -->
+          <button class="button start-button">
+            Iniciar
+          </button>
+      
+          <!-- Botón de reiniciar (cuando este detenido) -->
+          <button class="button reset-button">
+            Reiniciar
+          </button>
+        </div>
+      
+        <div class="laps-container">
+          <div class="laps-header">
+            <div class="lap-number">Vuelta</div>
+            <div class="lap-split">Dividir</div>
+            <div class="lap-total">Total</div>
+          </div>
+      
+          <ul class="laps-list">
+
+            <li class="lap-item">
+              <div class="lap-number">Vuelta 6</div>
+              <div class="lap-split">00:20.44</div>
+              <div class="lap-total">01:09.41</div>
+            </li>
+            
+
+            <li class="lap-item worst-lap">
+              <div class="lap-number">Vuelta 5</div>
+              <div class="lap-split">00:12.30</div>
+              <div class="lap-total">00:48.97</div>
+            </li>
+
+            <li class="lap-item">
+              <div class="lap-number">Vuelta 4</div>
+              <div class="lap-split">00:08.85</div>
+              <div class="lap-total">00:36.67</div>
+            </li>
+
+            <li class="lap-item">
+              <div class="lap-number">Vuelta 3</div>
+              <div class="lap-split">00:09.31</div>
+              <div class="lap-total">00:27.81</div>
+            </li>
+            
+            <li class="lap-item best-lap">
+              <div class="lap-number">Vuelta 2</div>
+              <div class="lap-split">00:08.06</div>
+              <div class="lap-total">00:18.49</div>
+            </li>
+            
+            <li class="lap-item">
+              <div class="lap-number">Vuelta 1</div>
+              <div class="lap-split">00:10.43</div>
+              <div class="lap-total">00:10.43</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    <script type="text/babel">
+      
+    </script>
+  </body>
+</html>
