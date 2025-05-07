@@ -27,82 +27,197 @@
          y como a mi me gusta correr me gustó mucho esa funcionalidad
     -->
 
-    <div class="stopwatch-container">
-        <div class="header">
-          <div class="tab active">Reloj mundial</div>
-          <div class="tab">Alarmas</div>
-          <div class="tab active">Cronómetro</div>
-        </div>
-      
-        <div class="timer-display">01:09.41</div>
-      
-        <div class="controls">
-          <button class="button lap-button">
-            Vuelta
-          </button>
-      
-          <!-- Botón para iniciar/reanudar cuando este detenido -->
-          <button class="button start-button">
-            Iniciar
-          </button>
-      
-          <!-- Botón de reiniciar (cuando este detenido) -->
-          <button class="button reset-button">
-            Reiniciar
-          </button>
-        </div>
-      
-        <div class="laps-container">
-          <div class="laps-header">
-            <div class="lap-number">Vuelta</div>
-            <div class="lap-split">Dividir</div>
-            <div class="lap-total">Total</div>
-          </div>
-      
-          <ul class="laps-list">
-
-            <li class="lap-item">
-              <div class="lap-number">Vuelta 6</div>
-              <div class="lap-split">00:20.44</div>
-              <div class="lap-total">01:09.41</div>
-            </li>
-            
-
-            <li class="lap-item worst-lap">
-              <div class="lap-number">Vuelta 5</div>
-              <div class="lap-split">00:12.30</div>
-              <div class="lap-total">00:48.97</div>
-            </li>
-
-            <li class="lap-item">
-              <div class="lap-number">Vuelta 4</div>
-              <div class="lap-split">00:08.85</div>
-              <div class="lap-total">00:36.67</div>
-            </li>
-
-            <li class="lap-item">
-              <div class="lap-number">Vuelta 3</div>
-              <div class="lap-split">00:09.31</div>
-              <div class="lap-total">00:27.81</div>
-            </li>
-            
-            <li class="lap-item best-lap">
-              <div class="lap-number">Vuelta 2</div>
-              <div class="lap-split">00:08.06</div>
-              <div class="lap-total">00:18.49</div>
-            </li>
-            
-            <li class="lap-item">
-              <div class="lap-number">Vuelta 1</div>
-              <div class="lap-split">00:10.43</div>
-              <div class="lap-total">00:10.43</div>
-            </li>
-          </ul>
-        </div>
-      </div>
-
     <script type="text/babel">
-      
+      const { useState, useEffect, useRef } = React;
+
+      function Stopwatch() {
+        // Estados que vamos a usar
+        const [time, setTime] = useState(0);
+        const [isRunning, setIsRunning] = useState(false);
+        const [laps, setLaps] = useState([]);
+
+        // Refs que vamos a estar usando
+        const intervalRef = useRef(null);
+        const startTimeRef = useRef(0);
+        const lastLapTimeRef = useRef(0);
+
+        // Formato de tiempo: MM:SS.CS (Minutos:Segundos.Milisegundos)
+        const formatTime = (milliseconds) => {
+          const minutes = Math.floor(milliseconds / 60000);
+          const seconds = Math.floor((milliseconds % 60000) / 1000);
+          const centiseconds = Math.floor((milliseconds % 1000) / 10);
+
+          return `${minutes.toString().padStart(2, "0")}:${seconds
+            .toString()
+            .padStart(2, "0")}.${centiseconds.toString().padStart(2, "0")}`;
+        };
+
+        // Con este metodo vamos a iniciar o detener el cronómetro
+        const toggleTimer = () => {
+          if (isRunning) {
+            // ** AQUI DETENEMOS EL CRONOMETRO **
+            clearInterval(intervalRef.current);
+            setIsRunning(false);
+          } else {
+            // AQUI LO INICIAMOS O REANUDAMOS
+            if (time === 0) {
+              // nuevo inicio
+              startTimeRef.current = Date.now();
+              lastLapTimeRef.current = Date.now();
+            } else {
+              // reanudación
+              startTimeRef.current = Date.now() - time;
+            }
+
+            setIsRunning(true);
+          }
+        };
+
+        // ** AQUI REINICIAMOS EL CRONOMETRO **
+        const resetTimer = () => {
+          clearInterval(intervalRef.current);
+          setTime(0);
+          setIsRunning(false);
+          setLaps([]);
+          startTimeRef.current = 0;
+          lastLapTimeRef.current = 0;
+        };
+
+        // Registrar una vuelta
+        const recordLap = () => {
+          const now = Date.now();
+          const lapTime = now - lastLapTimeRef.current;
+          const totalTime = time;
+
+          // Crear nuevo array con la nueva vuelta al inicio
+          setLaps((prevLaps) => [
+            {
+              number: prevLaps.length + 1,
+              lapTime,
+              totalTime,
+            },
+            ...prevLaps,
+          ]);
+
+          lastLapTimeRef.current = now;
+        };
+
+        // Efecto para manejar el intervalo
+        useEffect(() => {
+          if (isRunning) {
+            intervalRef.current = setInterval(() => {
+              const currentTime = Date.now() - startTimeRef.current;
+              setTime(currentTime);
+            }, 10); // Actualizar cada 10ms para mayor precisión
+          }
+
+          // Cleanup function para evitar los memory leaks
+          return () => {
+            if (intervalRef.current) {
+              clearInterval(intervalRef.current);
+            }
+          };
+        }, [isRunning]);
+
+
+
+        /* 
+            Aqui es donde viene lo "extra", donde agregue la funcionalidad de "mejor vuelta" y "peor vuelta"
+            donde la vuelta más lenta va a estar resaltada en ROJO y la vuelta más rapida va a estar resaltada en VERDE
+        */
+        const findFastestAndSlowestLaps = () => {
+          if (laps.length <= 1) return { fastest: null, slowest: null };
+
+          let fastestIndex = 0;
+          let slowestIndex = 0;
+
+          for (let i = 1; i < laps.length; i++) {
+            if (laps[i].lapTime < laps[fastestIndex].lapTime) {
+              fastestIndex = i;
+            }
+            if (laps[i].lapTime > laps[slowestIndex].lapTime) {
+              slowestIndex = i;
+            }
+          }
+
+          return {
+            fastest: laps[fastestIndex].number,
+            slowest: laps[slowestIndex].number,
+          };
+        };
+
+        const { fastest, slowest } = findFastestAndSlowestLaps();
+
+        return (
+          <div className="stopwatch-container">
+            <div className="header">
+              <div className="tab active">Reloj mundial</div>
+              <div className="tab">Alarmas</div>
+              <div className="tab active">Cronómetro</div>
+              <div className="tab">Temporizadores</div>
+            </div>
+
+            <div className="timer-display">{formatTime(time)}</div>
+
+            <div className="controls">
+              <button
+                className="button lap-button"
+                onClick={recordLap}
+                disabled={!isRunning || time === 0}
+              >
+                Vuelta
+              </button>
+
+              {isRunning ? (
+                <button className="button stop-button" onClick={toggleTimer}>
+                  Detener
+                </button>
+              ) : (
+                <button className="button start-button" onClick={toggleTimer}>
+                  {time === 0 ? "Iniciar" : "Reanudar"}
+                </button>
+              )}
+
+              {!isRunning && time > 0 && (
+                <button className="button reset-button" onClick={resetTimer}>
+                  Reiniciar
+                </button>
+              )}
+            </div>
+
+            {laps.length > 0 && (
+              <div className="laps-container">
+                <div className="laps-header">
+                  <div className="lap-number">Vuelta</div>
+                  <div className="lap-split">Dividir</div>
+                  <div className="lap-total">Total</div>
+                </div>
+
+                <ul className="laps-list">
+                  {laps.map((lap) => (
+                    <li
+                      key={lap.number}
+                      className={`lap-item ${
+                        lap.number === fastest ? "best-lap" : ""
+                      } ${lap.number === slowest ? "worst-lap" : ""}`}
+                    >
+                      <div className="lap-number">Vuelta {lap.number}</div>
+                      <div className="lap-split">{formatTime(lap.lapTime)}</div>
+                      <div className="lap-total">
+                        {formatTime(lap.totalTime)}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        );
+      }
+
+      // Renderizar la aplicación
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<Stopwatch />);
     </script>
   </body>
 </html>
