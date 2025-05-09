@@ -1,20 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title></title>
 
     <!-- React -->
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script
+      src="https://unpkg.com/react@18/umd/react.development.js"
+      crossorigin
+    ></script>
     <!-- ReactDOM -->
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+      crossorigin
+    ></script>
     <!-- Babel para procesar JSX -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <div id="root"></div>
 
-    <script type="text/babel"></script>
-</body>
+    <script type="text/babel">
+        //Primero, creamos el contexto del tema
+        const ThemeContext = React.createContext();
+
+        //Luego, creamos un componente para mostrar el tema actual
+        function ThemeDisplay() {
+            const { theme } = React.useContext(ThemeContext);
+
+            const themeStyles = {
+            backgroundColor: theme === "light" ? "#ffffff" : "#262624",
+            color: theme === "light" ? "#262624" : "#ffffff",
+            };
+
+            return (
+            <div className="theme-card theme-transition" style={themeStyles}>
+                <h2>Tema Actual: {theme === "light" ? "☀️" : "🌙"}</h2>
+                <p style={{ marginTop: "15px" }}>
+                {theme === "light"
+                    ? "Este es el modo claro, perfecto para NUNCA jaja."
+                    : "Este es el modo oscuro, ideal para programadores"}
+                </p>
+            </div>
+            );
+        }
+
+        //Luego, creamos un componente que pueda cambiar el tema
+        function ThemeToggle() {
+            const { theme, toggleTheme } = React.useContext(ThemeContext);
+
+            const buttonStyles = {
+            backgroundColor: theme === "light" ? "#262624" : "#ffffff",
+            color: theme === "light" ? "#ffffff" : "#262624",
+            };
+
+            return (
+                <button
+                    onClick={toggleTheme}
+                    style={buttonStyles}
+                    className="theme-transition"
+                >
+                    Cambiar a tema {theme === "light" ? "oscuro" : "claro"}
+                </button>
+            );
+        }
+
+        //Luego, creamos el componente principal
+        function App() {
+            const [theme, setTheme] = React.useState("light");
+
+            // Esta función es la que va a cambiar el tema
+            const toggleTheme = () => {
+            setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
+            };
+
+            React.useEffect(() => {
+            document.body.style.backgroundColor =
+                theme === "light" ? "#f5f5f5" : "#121212";
+            document.body.style.color = theme === "light" ? "#333333" : "#f5f5f5";
+            }, [theme]);
+
+            return (
+                <ThemeContext.Provider value={{ theme, toggleTheme }}>
+                    <div className="app-container">
+                    <h1>Demo de React Context: Sistema de Tema</h1>
+                    <p>
+                        Este ejemplo muestra cómo usar <code>useContext</code> para
+                        compartir el estado del tema entre componentes.
+                    </p>
+
+                    <ThemeToggle />
+                    <ThemeDisplay />
+
+                    <div style={{ marginTop: "40px", opacity: 0.8 }}>
+                        <p>
+                        Nota: El cambio de tema afecta a todos los componentes sin
+                        necesidad de pasar props.
+                        </p>
+                        <p>
+                        Tanto <code>ThemeToggle</code> como <code>ThemeDisplay</code>{" "}
+                        acceden al mismo contexto.
+                        </p>
+                    </div>
+                    </div>
+                </ThemeContext.Provider>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(<App />);
+    </script>
+  </body>
 </html>
