@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title></title>
 
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
     <!-- React -->
     <script
       src="https://unpkg.com/react@18/umd/react.development.js"
@@ -17,99 +22,148 @@
     ></script>
     <!-- Babel para procesar JSX -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        width: 100%;
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.3s, color 0.3s;
+      }
+
+      .app-container {
+        max-width: 600px;
+        height: 100%;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      h1 {
+        margin-bottom: 30px;
+      }
+
+      button {
+        padding: 12px 20px;
+        font-size: 16px;
+        border-radius: 8px;
+        margin: 20px 0;
+        cursor: pointer;
+        transition: all 0.3s;
+        border: 1px solid #ccc;
+      }
+
+      .theme-card {
+        padding: 40px;
+        border-radius: 12px;
+        margin-top: 20px;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Animación para cambio de tema */
+      @keyframes fadeChange {
+        0% {
+          opacity: 0.8;
+          transform: scale(0.98);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .theme-transition {
+        animation: fadeChange 0.3s ease;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
 
     <script type="text/babel">
-        //Primero, creamos el contexto del tema
-        const ThemeContext = React.createContext();
+      //Primero, creamos el contexto del tema
+      const ThemeContext = React.createContext();
 
-        //Luego, creamos un componente para mostrar el tema actual
-        function ThemeDisplay() {
-            const { theme } = React.useContext(ThemeContext);
+      //Luego, creamos un componente para mostrar el tema actual
+      function ThemeDisplay() {
+        const { theme } = React.useContext(ThemeContext);
 
-            const themeStyles = {
-            backgroundColor: theme === "light" ? "#ffffff" : "#262624",
-            color: theme === "light" ? "#262624" : "#ffffff",
-            };
+        const themeStyles = {
+          backgroundColor: theme === "light" ? "#ffffff" : "#262624",
+          color: theme === "light" ? "#262624" : "#ffffff",
+        };
 
-            return (
-            <div className="theme-card theme-transition" style={themeStyles}>
-                <h2>Tema Actual: {theme === "light" ? "☀️" : "🌙"}</h2>
-                <p style={{ marginTop: "15px" }}>
-                {theme === "light"
-                    ? "Este es el modo claro, perfecto para NUNCA jaja."
-                    : "Este es el modo oscuro, ideal para programadores"}
-                </p>
+        return (
+          <div className="theme-card theme-transition" style={themeStyles}>
+            <h2>Tema Actual: {theme === "light" ? "☀️" : "🌙"}</h2>
+            <p style={{ marginTop: "15px" }}>
+              {theme === "light"
+                ? "Este es el modo claro, perfecto para NUNCA jaja."
+                : "Este es el modo oscuro, ideal para programadores"}
+            </p>
+          </div>
+        );
+      }
+
+      //Luego, creamos un componente que pueda cambiar el tema
+      function ThemeToggle() {
+        const { theme, toggleTheme } = React.useContext(ThemeContext);
+
+        const buttonStyles = {
+          backgroundColor: theme === "light" ? "#262624" : "#ffffff",
+          color: theme === "light" ? "#ffffff" : "#262624",
+        };
+
+        return (
+          <button
+            onClick={toggleTheme}
+            style={buttonStyles}
+            className="theme-transition"
+          >
+            Cambiar a tema {theme === "light" ? "oscuro" : "claro"}
+          </button>
+        );
+      }
+
+      //Luego, creamos el componente principal
+      function App() {
+        const [theme, setTheme] = React.useState("light");
+
+        // Esta función es la que va a cambiar el tema
+        const toggleTheme = () => {
+          setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
+        };
+
+        React.useEffect(() => {
+          document.body.style.backgroundColor =
+            theme === "light" ? "#f5f5f5" : "#121212";
+          document.body.style.color = theme === "light" ? "#333333" : "#f5f5f5";
+        }, [theme]);
+
+        return (
+          <ThemeContext.Provider value={{ theme, toggleTheme }}>
+            <div className="app-container">
+              <h1>Tema Claro/Oscuro</h1>
+
+              <ThemeDisplay />
+              <ThemeToggle />
             </div>
-            );
-        }
+          </ThemeContext.Provider>
+        );
+      }
 
-        //Luego, creamos un componente que pueda cambiar el tema
-        function ThemeToggle() {
-            const { theme, toggleTheme } = React.useContext(ThemeContext);
-
-            const buttonStyles = {
-            backgroundColor: theme === "light" ? "#262624" : "#ffffff",
-            color: theme === "light" ? "#ffffff" : "#262624",
-            };
-
-            return (
-                <button
-                    onClick={toggleTheme}
-                    style={buttonStyles}
-                    className="theme-transition"
-                >
-                    Cambiar a tema {theme === "light" ? "oscuro" : "claro"}
-                </button>
-            );
-        }
-
-        //Luego, creamos el componente principal
-        function App() {
-            const [theme, setTheme] = React.useState("light");
-
-            // Esta función es la que va a cambiar el tema
-            const toggleTheme = () => {
-            setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
-            };
-
-            React.useEffect(() => {
-            document.body.style.backgroundColor =
-                theme === "light" ? "#f5f5f5" : "#121212";
-            document.body.style.color = theme === "light" ? "#333333" : "#f5f5f5";
-            }, [theme]);
-
-            return (
-                <ThemeContext.Provider value={{ theme, toggleTheme }}>
-                    <div className="app-container">
-                    <h1>Demo de React Context: Sistema de Tema</h1>
-                    <p>
-                        Este ejemplo muestra cómo usar <code>useContext</code> para
-                        compartir el estado del tema entre componentes.
-                    </p>
-
-                    <ThemeToggle />
-                    <ThemeDisplay />
-
-                    <div style={{ marginTop: "40px", opacity: 0.8 }}>
-                        <p>
-                        Nota: El cambio de tema afecta a todos los componentes sin
-                        necesidad de pasar props.
-                        </p>
-                        <p>
-                        Tanto <code>ThemeToggle</code> como <code>ThemeDisplay</code>{" "}
-                        acceden al mismo contexto.
-                        </p>
-                    </div>
-                    </div>
-                </ThemeContext.Provider>
-            );
-        }
-
-        const root = ReactDOM.createRoot(document.getElementById("root"));
-        root.render(<App />);
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<App />);
     </script>
   </body>
 </html>
