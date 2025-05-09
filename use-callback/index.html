@@ -1,22 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title></title>
 
     <!-- React -->
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script
+      src="https://unpkg.com/react@18/umd/react.development.js"
+      crossorigin
+    ></script>
     <!-- ReactDOM -->
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+      crossorigin
+    ></script>
     <!-- Babel para procesar JSX -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <div id="root"></div>
 
     <script type="text/babel">
-        
+        const { useState, useCallback, memo } = React;
+
+        // Componente ButtonOptimizado con React.memo para evitar re-renders innecesarios
+        const ButtonOptimizado = memo(({ onClick, label }) => {
+            console.log("Boton Optimizado: RENDERIZADO");
+
+            return (
+            <button className="button button-optimized" onClick={onClick}>
+                {label}
+                <div className="render-count">Revisar consola para ver renders</div>
+            </button>
+            );
+        });
+
+        // Componente ButtonNormal sin optimización
+        const ButtonNormal = ({ onClick, label }) => {
+            console.log("Boton Normal: RENDERIZADO");
+
+            return (
+            <button className="button button-normal" onClick={onClick}>
+                {label}
+                <div className="render-count">Revisar consola para ver renders</div>
+            </button>
+            );
+        };
+
+        function Card() {
+            const [randomNumber, setRandomNumber] = React.useState(
+            Math.floor(Math.random() * 100)
+            );
+            const [counter, setCounter] = React.useState(0);
+
+            // Función con useCallback - se memoriza y no causa re-renders innecesarios
+            const createRandom = useCallback(() => {
+            console.log("Función que crea un número random: EJECUTADA");
+            setRandomNumber(Math.floor(Math.random() * 100));
+            }, []); // Array de dependencias vacío - la función nunca cambia
+
+            // Función normal - se crea nueva en cada render
+            const addCounter = () => {
+            console.log("Función que incrementa el contador: EJECUTADA");
+            setCounter(counter + 1);
+            };
+
+            console.log("Carta renderizada");
+
+            return (
+            <div className="container">
+                <h1>useCallback en React</h1>
+
+                <div className="card">
+                <div className="card-title">Carta de elementos</div>
+                <div className="card-content">
+                    <div>
+                    <div className="random-number">
+                        Número aleatorio: {randomNumber}
+                    </div>
+                    <div className="counter">Contador: {counter}</div>
+                    </div>
+
+                    <div className="buttons-container">
+                    <ButtonOptimizado
+                        onClick={createRandom}
+                        label="Número random (optimizado)"
+                    />
+
+                    <ButtonNormal
+                        onClick={addCounter}
+                        label="Incrementar contador"
+                    />
+                    </div>
+                </div>
+                </div>
+            </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(<Card />);
     </script>
-</body>
+  </body>
 </html>
