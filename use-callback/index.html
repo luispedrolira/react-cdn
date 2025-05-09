@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title></title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+
 
     <!-- React -->
     <script
@@ -17,90 +19,199 @@
     ></script>
     <!-- Babel para procesar JSX -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        padding: 20px;
+        background-color: #f5f5f7;
+        color: #333;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      h1 {
+        margin-bottom: 20px;
+        text-align: center;
+        color: #1d1d1f;
+      }
+
+      .card {
+        background-color: white;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .card-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #1d1d1f;
+      }
+
+      .card-content {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .random-number {
+        font-size: 2rem;
+        text-align: center;
+        color: #06c;
+        margin: 15px 0;
+        font-weight: bold;
+      }
+
+      .counter {
+        font-size: 1.5rem;
+        text-align: center;
+        color: #ff9500;
+        margin: 10px 0;
+      }
+
+      .buttons-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 15px;
+      }
+
+      .button {
+        padding: 10px 15px;
+        border-radius: 8px;
+        border: none;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        flex: 1;
+        min-width: 150px;
+        transition: all 0.2s ease;
+      }
+
+      .button-optimized {
+        background-color: #06c;
+        color: white;
+      }
+
+      .button-optimized:hover {
+        background-color: #0055b3;
+      }
+
+      .button-normal {
+        background-color: #ff9500;
+        color: white;
+      }
+
+      .button-normal:hover {
+        background-color: #e68600;
+      }
+
+      .render-count {
+        background-color: #e6e6e6;
+        padding: 8px 12px;
+        border-radius: 4px;
+        margin-top: 10px;
+        font-size: 0.9rem;
+        color: #666;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useCallback, memo } = React;
+      const { useState, useCallback, memo } = React;
 
-        // Componente ButtonOptimizado con React.memo para evitar re-renders innecesarios
-        const ButtonOptimizado = memo(({ onClick, label }) => {
-            console.log("Boton Optimizado: RENDERIZADO");
+      // Componente ButtonOptimizado con React.memo para evitar re-renders innecesarios
+      const ButtonOptimizado = memo(({ onClick, label }) => {
+        console.log("Boton Optimizado: RENDERIZADO");
 
-            return (
-            <button className="button button-optimized" onClick={onClick}>
-                {label}
-                <div className="render-count">Revisar consola para ver renders</div>
-            </button>
-            );
-        });
+        return (
+          <button className="button button-optimized" onClick={onClick}>
+            {label}
+            <div className="render-count">Revisar consola para ver renders</div>
+          </button>
+        );
+      });
 
-        // Componente ButtonNormal sin optimización
-        const ButtonNormal = ({ onClick, label }) => {
-            console.log("Boton Normal: RENDERIZADO");
+      // Componente ButtonNormal sin optimización
+      const ButtonNormal = ({ onClick, label }) => {
+        console.log("Boton Normal: RENDERIZADO");
 
-            return (
-            <button className="button button-normal" onClick={onClick}>
-                {label}
-                <div className="render-count">Revisar consola para ver renders</div>
-            </button>
-            );
+        return (
+          <button className="button button-normal" onClick={onClick}>
+            {label}
+            <div className="render-count">Revisar consola para ver renders</div>
+          </button>
+        );
+      };
+
+      function Card() {
+        const [randomNumber, setRandomNumber] = React.useState(
+          Math.floor(Math.random() * 100)
+        );
+        const [counter, setCounter] = React.useState(0);
+
+        // Función con useCallback - se memoriza y no causa re-renders innecesarios
+        const createRandom = useCallback(() => {
+          console.log("Función que crea un número random: EJECUTADA");
+          setRandomNumber(Math.floor(Math.random() * 100));
+        }, []); // Array de dependencias vacío - la función nunca cambia
+
+        // Función normal - se crea nueva en cada render
+        const addCounter = () => {
+          console.log("Función que incrementa el contador: EJECUTADA");
+          setCounter(counter + 1);
         };
 
-        function Card() {
-            const [randomNumber, setRandomNumber] = React.useState(
-            Math.floor(Math.random() * 100)
-            );
-            const [counter, setCounter] = React.useState(0);
+        console.log("Carta renderizada");
 
-            // Función con useCallback - se memoriza y no causa re-renders innecesarios
-            const createRandom = useCallback(() => {
-            console.log("Función que crea un número random: EJECUTADA");
-            setRandomNumber(Math.floor(Math.random() * 100));
-            }, []); // Array de dependencias vacío - la función nunca cambia
+        return (
+          <div className="container">
+            <h1>useCallback en React</h1>
 
-            // Función normal - se crea nueva en cada render
-            const addCounter = () => {
-            console.log("Función que incrementa el contador: EJECUTADA");
-            setCounter(counter + 1);
-            };
-
-            console.log("Carta renderizada");
-
-            return (
-            <div className="container">
-                <h1>useCallback en React</h1>
-
-                <div className="card">
-                <div className="card-title">Carta de elementos</div>
-                <div className="card-content">
-                    <div>
-                    <div className="random-number">
-                        Número aleatorio: {randomNumber}
-                    </div>
-                    <div className="counter">Contador: {counter}</div>
-                    </div>
-
-                    <div className="buttons-container">
-                    <ButtonOptimizado
-                        onClick={createRandom}
-                        label="Número random (optimizado)"
-                    />
-
-                    <ButtonNormal
-                        onClick={addCounter}
-                        label="Incrementar contador"
-                    />
-                    </div>
+            <div className="card">
+              <div className="card-title">Carta de elementos</div>
+              <div className="card-content">
+                <div>
+                  <div className="random-number">
+                    Número aleatorio: {randomNumber}
+                  </div>
+                  <div className="counter">Contador: {counter}</div>
                 </div>
+
+                <div className="buttons-container">
+                  <ButtonOptimizado
+                    onClick={createRandom}
+                    label="Número random (optimizado)"
+                  />
+
+                  <ButtonNormal
+                    onClick={addCounter}
+                    label="Incrementar contador"
+                  />
                 </div>
+              </div>
             </div>
-            );
-        }
+          </div>
+        );
+      }
 
-        const root = ReactDOM.createRoot(document.getElementById("root"));
-        root.render(<Card />);
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<Card />);
     </script>
   </body>
 </html>
